@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<body>
+<div th:fragment="sidebar" id="sidebar" class="app-sidebar">
+    <a class="brand" th:href="@{/}"><i class="bi bi-pizza"></i> Pediu Patrão</a>
+    <div class="sidebar-user"><span class="small text-muted">Conectado como</span><strong th:text="${currentUser}"></strong></div>
+    <nav class="nav flex-column">
+        <a class="nav-link" th:href="@{/}"><i class="bi bi-house"></i> Início</a>
+        <a class="nav-link" th:href="@{/pedidos}"><i class="bi bi-bag"></i> Pedidos</a>
+        <a class="nav-link" th:if="${isAtendente or isGerente}" th:href="@{/clientes}"><i class="bi bi-people"></i> Clientes</a>
+        <a class="nav-link" th:if="${isGerente}" th:href="@{/produtos}"><i class="bi bi-boxes"></i> Produtos</a>
+        <a class="nav-link" th:if="${isAdmin}" th:href="@{/usuarios}"><i class="bi bi-person-gear"></i> Usuários</a>
+        <a class="nav-link" th:if="${isAdmin or isGerente}" th:href="@{/auditoria}"><i class="bi bi-clock-history"></i> Auditoria</a>
+        <hr>
+        <form th:action="@{/logout}" method="post"><button class="nav-link border-0 bg-transparent w-100 text-start" type="submit"><i class="bi bi-box-arrow-right"></i> Sair</button></form>
+    </nav>
+</div>
+</body>
+</html>

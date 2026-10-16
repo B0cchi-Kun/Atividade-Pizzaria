@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div><h2 class="fw-bold mb-1"><i class="bi bi-boxes me-2 text-primary"></i>Produtos</h2><p class="text-muted mb-0">Produtos ativos podem ser adicionados aos pedidos.</p></div>
+    </div>
+    <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+    <div class="alert alert-danger" th:if="${erro}" th:text="${erro}"></div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header"><strong>Novo produto</strong></div>
+        <div class="card-body">
+            <form th:action="@{/produtos/salvar}" method="post" class="row g-3 align-items-end">
+                <div class="col-md-4"><label class="form-label" for="nome">Nome</label><input id="nome" name="nome" class="form-control" maxlength="100" required></div>
+                <div class="col-md-3"><label class="form-label" for="tipo">Tipo</label><select id="tipo" name="tipo" class="form-select" required><option value="Pizza">Pizza</option><option value="Lanche">Lanche</option><option value="Bebida">Bebida</option><option value="Porção">Porção</option><option value="Adicional">Adicional</option></select></div>
+                <div class="col-md-3"><label class="form-label" for="preco">Preço (R$)</label><input id="preco" type="number" name="preco" class="form-control" min="0.01" step="0.01" required></div>
+                <div class="col-md-2"><input type="hidden" name="ativo" value="true"><button class="btn btn-primary w-100" type="submit">Cadastrar</button></div>
+            </form>
+        </div>
+    </div>
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark"><tr><th class="ps-3">Produto</th><th>Tipo</th><th>Preço</th><th>Ativo</th><th>Ação</th></tr></thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(produtos)}"><td colspan="5" class="text-center text-muted py-5">Nenhum produto cadastrado.</td></tr>
+                    <tr th:each="produto : ${produtos}">
+                        <td class="ps-3" th:text="${produto.nome}"></td><td th:text="${produto.tipo}"></td><td>R$ <span th:text="${produto.preco}"></span></td><td th:text="${produto.ativo == null or produto.ativo ? 'Sim' : 'Não'}"></td>
+                        <td><form th:action="@{/produtos/deletar/{id}(id=${produto.id})}" method="post" onsubmit="return confirm('Excluir este produto?')"><button class="btn btn-sm btn-outline-danger" type="submit">Excluir</button></form></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
