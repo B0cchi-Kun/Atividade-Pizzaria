@@ -16,6 +16,8 @@ import com.umc.pediupatrao.service.PedidoService;
 import com.umc.pediupatrao.service.ProdutoService;
 import com.umc.pediupatrao.service.UsuarioService;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +36,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HomeController {
+    private static final ZoneId FUSO_OPERACAO = ZoneId.of("America/Sao_Paulo");
+
     private final PedidoService pedidoService;
     private final ClienteService clienteService;
     private final ProdutoService produtoService;
@@ -78,6 +82,16 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("totalPedidos", pedidoService.listarPedidos().size());
         model.addAttribute("content", "home :: content");
+        return "layout";
+    }
+
+    @GetMapping("/dashboard")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    public String dashboard(Model model) {
+        LocalDate hoje = LocalDate.now(FUSO_OPERACAO);
+        model.addAttribute("dataInicio", hoje.minusDays(29));
+        model.addAttribute("dataFim", hoje);
+        model.addAttribute("content", "dashboard :: content");
         return "layout";
     }
 

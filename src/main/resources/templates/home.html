@@ -7,6 +7,7 @@
         <div class="col-md-4"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted">Pedidos registrados</div><div class="display-5 fw-semibold" th:text="${totalPedidos}">0</div><a th:href="@{/pedidos}" class="btn btn-sm btn-outline-primary mt-3">Acompanhar pedidos</a></div></div></div>
         <div class="col-md-4" th:if="${isAtendente or isGerente}"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted">Cadastro de clientes</div><p class="mb-0">Consulte contatos e endereços usados nos pedidos.</p><a th:href="@{/clientes}" class="btn btn-sm btn-outline-primary mt-3">Abrir clientes</a></div></div></div>
         <div class="col-md-4" th:if="${isGerente}"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted">Auditoria</div><p class="mb-0">Consulte alterações de pedidos e clientes.</p><a th:href="@{/auditoria}" class="btn btn-sm btn-outline-primary mt-3">Ver registros</a></div></div></div>
+        <div class="col-md-4" th:if="${isAdmin or isGerente}"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted"><i class="bi bi-speedometer2 me-1 text-danger"></i>Dashboard administrativo</div><p class="mb-0">Acompanhe faturamento, tendências, situação dos pedidos e produtos em destaque.</p><a th:href="@{/dashboard}" class="btn btn-sm btn-outline-danger mt-3">Abrir dashboard</a></div></div></div>
     </div>
     <div class="alert alert-info mt-4 mb-0">Ações de pedido são validadas no servidor conforme seu perfil e o estado atual do pedido.</div>
 </div>

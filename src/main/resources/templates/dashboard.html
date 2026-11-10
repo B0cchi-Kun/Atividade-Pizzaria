@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<body>
+<div th:fragment="content" id="dashboard" class="dashboard-page"
+     th:data-inicio="${dataInicio}" th:data-fim="${dataFim}">
+    <header class="dashboard-heading d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <span class="dashboard-eyebrow">PAINEL DE GESTÃO</span>
+            <h1 class="fw-bold mb-1"><i class="bi bi-speedometer2 me-2 text-danger"></i>Dashboard administrativo</h1>
+            <p class="text-muted mb-0">Vendas, pedidos e produtos em um só lugar.</p>
+        </div>
+        <span class="dashboard-live"><span></span> Dados atualizados automaticamente</span>
+    </header>
+
+    <section class="card dashboard-filter-card mb-4">
+        <form id="dashboardFiltros" class="card-body row g-3 align-items-end">
+            <div class="col-12 col-sm-4 col-lg-3">
+                <label for="dashboardInicio" class="form-label">Data inicial</label>
+                <input id="dashboardInicio" class="form-control" type="date" th:value="${dataInicio}" required>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-3">
+                <label for="dashboardFim" class="form-label">Data final</label>
+                <input id="dashboardFim" class="form-control" type="date" th:value="${dataFim}" required>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-3">
+                <label for="dashboardAgrupamento" class="form-label">Agrupar vendas</label>
+                <select id="dashboardAgrupamento" class="form-select">
+                    <option value="DIA">Por dia</option>
+                    <option value="MES">Por mês</option>
+                </select>
+            </div>
+            <div class="col-12 col-lg-3 d-grid">
+                <button id="dashboardAtualizar" class="btn btn-danger" type="submit">
+                    <i class="bi bi-arrow-clockwise me-1"></i>Atualizar painel
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <div id="dashboardErro" class="alert alert-danger d-none" role="alert"></div>
+    <div id="dashboardCarregando" class="text-center text-muted py-4">
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>Carregando dados…
+    </div>
+
+    <section class="row g-3 mb-4" aria-label="Indicadores de vendas">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card dashboard-kpi dashboard-kpi-primary h-100">
+                <div class="card-body"><div class="dashboard-kpi-label">Faturamento líquido</div>
+                    <div id="kpiFaturamento" class="dashboard-kpi-value">—</div>
+                    <div class="dashboard-kpi-note">Pedidos não cancelados no período</div></div>
+            </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card dashboard-kpi h-100">
+                <div class="card-body"><div class="dashboard-kpi-label">Pedidos registrados</div>
+                    <div id="kpiPedidos" class="dashboard-kpi-value">—</div>
+                    <div id="kpiPedidosAtivos" class="dashboard-kpi-note">—</div></div>
+            </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card dashboard-kpi h-100">
+                <div class="card-body"><div class="dashboard-kpi-label">Ticket médio</div>
+                    <div id="kpiTicket" class="dashboard-kpi-value">—</div>
+                    <div class="dashboard-kpi-note">Faturamento ÷ pedidos não cancelados</div></div>
+            </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card dashboard-kpi dashboard-kpi-warning h-100">
+                <div class="card-body"><div class="dashboard-kpi-label">Pedidos cancelados</div>
+                    <div id="kpiCancelados" class="dashboard-kpi-value">—</div>
+                    <div class="dashboard-kpi-note">Exibidos à parte, fora do faturamento</div></div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-3 mb-4">
+        <div class="col-12 col-xl-8">
+            <article class="card dashboard-panel h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div><h2 class="h5 mb-1">Análise de vendas</h2><p class="text-muted small mb-0">Faturamento e quantidade de pedidos não cancelados</p></div>
+                    <i class="bi bi-graph-up-arrow fs-4 text-danger"></i>
+                </div>
+                <div class="card-body dashboard-chart-wrap"><canvas id="dashboardVendas" aria-label="Gráfico de vendas ao longo do tempo"></canvas></div>
+            </article>
+        </div>
+        <div class="col-12 col-xl-4">
+            <article class="card dashboard-panel h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div><h2 class="h5 mb-1">Situação dos pedidos</h2><p class="text-muted small mb-0">Distribuição por etapa</p></div>
+                    <i class="bi bi-pie-chart fs-4 text-danger"></i>
+                </div>
+                <div class="card-body dashboard-status-chart"><canvas id="dashboardStatus" aria-label="Gráfico de pedidos por situação"></canvas></div>
+            </article>
+        </div>
+    </section>
+
+    <section class="card dashboard-panel">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div><h2 class="h5 mb-1">Produtos mais vendidos</h2><p class="text-muted small mb-0">Ranking por quantidade; pedidos cancelados não entram</p></div>
+            <i class="bi bi-trophy fs-4 text-warning"></i>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead><tr><th class="ps-4">#</th><th>Produto</th><th class="text-end">Unidades</th><th class="text-end pe-4">Receita</th></tr></thead>
+                <tbody id="dashboardProdutos">
+                    <tr><td colspan="4" class="text-center text-muted py-4">Carregando ranking…</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-white small text-muted d-flex justify-content-between">
+            <span>Fonte: pedidos registrados no Pediu Patrão</span>
+            <span id="dashboardAtualizadoEm">Aguardando atualização</span>
+        </div>
+    </section>
+    <script th:src="@{/plugins/chart.js/Chart.min.js}"></script>
+    <script th:src="@{/js/dashboard.js}"></script>
+</div>
+</body>
+</html>

@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "pedidos")
@@ -19,6 +20,7 @@ public class Pedido {
     private BigDecimal valorTotal = BigDecimal.ZERO;
     private String status = StatusPedido.RECEBIDO.name();
     private String registradoPor;
+    @Indexed
     private Instant dataHoraEntrada;
     private String responsavelSaida;
     private Instant dataHoraSaida;

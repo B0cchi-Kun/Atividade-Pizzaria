@@ -13,8 +13,32 @@ main.container-fluid { margin-left: var(--sidebar-width); width: calc(100% - var
 .card-header { background: #fff; border-bottom-color: #eef0f2; }
 table th { white-space: nowrap; }
 code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.dashboard-page { max-width: 1640px; margin: 0 auto; }
+.dashboard-heading h1 { font-size: clamp(1.55rem, 2vw, 2rem); }
+.dashboard-eyebrow { color: var(--brand); font-size: .72rem; letter-spacing: .12em; font-weight: 800; }
+.dashboard-live { display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .75rem; background: #e7f5eb; color: #35714a; border-radius: 99px; font-size: .8rem; }
+.dashboard-live span { width: .5rem; height: .5rem; border-radius: 50%; background: #4ba96a; box-shadow: 0 0 0 3px #4ba96a25; }
+.dashboard-filter-card, .dashboard-panel { border: 1px solid #eaedf0; box-shadow: 0 5px 18px rgba(28, 37, 48, .045); }
+.dashboard-filter-card .form-label { font-size: .83rem; font-weight: 700; }
+.dashboard-kpi { border: 1px solid #eaedf0; box-shadow: 0 5px 18px rgba(28, 37, 48, .045); overflow: hidden; position: relative; }
+.dashboard-kpi:after { content: ""; position: absolute; width: 4px; inset: 0 auto 0 0; background: #c43d2b; }
+.dashboard-kpi-primary:after { background: #c43d2b; }
+.dashboard-kpi-warning:after { background: #d99a2b; }
+.dashboard-kpi-label { color: #6c757d; font-size: .88rem; font-weight: 600; }
+.dashboard-kpi-value { font-size: clamp(1.65rem, 2.4vw, 2.15rem); font-weight: 800; letter-spacing: -.035em; margin: .55rem 0 .35rem; }
+.dashboard-kpi-note { font-size: .76rem; color: #7d858e; }
+.dashboard-panel .card-header { border-radius: .8rem .8rem 0 0; padding: 1rem 1.2rem; }
+.dashboard-panel .card-header h2 { font-weight: 750; }
+.dashboard-chart-wrap { height: 330px; }
+.dashboard-status-chart { height: 330px; display: flex; align-items: center; justify-content: center; }
+.dashboard-status-chart canvas { max-height: 290px; }
+.dashboard-panel .table thead th { color: #7a828a; background: #fafbfc; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; border-bottom-width: 1px; }
+.dashboard-panel .table tbody tr:last-child td { border-bottom: 0; }
+#dashboardAtualizar:disabled { opacity: .72; cursor: wait; }
 @media (max-width: 768px) {
     :root { --sidebar-width: 0px; }
     .app-sidebar { position: relative; width: 100%; height: auto; }
     main.container-fluid { margin-left: 0; width: 100%; }
+    .dashboard-chart-wrap { height: 290px; }
+    .dashboard-status-chart { height: 290px; }
 }
